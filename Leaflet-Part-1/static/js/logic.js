@@ -61,29 +61,29 @@ function createFeatures(earthquakeData) {
 
     
 // Create map legend to provide context for map data
-let legend = L.control({position: 'bottomright'});
+// let legend = L.control({position: 'bottomright'});
 
-legend.onAdd = function() {
-    var div = L.DomUtil.create('div', 'info legend');
-    var grades = [1.0, 2.5, 4.0, 5.5, 8.0];
-    var labels = [];
-    var legendInfo = "<h4>Magnitude</h4>";
+// legend.onAdd = function() {
+//     var div = L.DomUtil.create('div', 'info legend');
+//     var grades = [1.0, 2.5, 4.0, 5.5, 8.0];
+//     var labels = [];
+//     var legendInfo = "<h4>Magnitude</h4>";
 
-    div.innerHTML = legendInfo
+//     div.innerHTML = legendInfo
 
-    // go through each magnitude item to label and color the legend
-    // push to labels array as list item
-    for (var i = 0; i < grades.length; i++) {
-          labels.push('<ul style="background-color:' + circleColor(grades[i] + 1) + '"> <span>' + grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '' : '+') + '</span></ul>');
-        }
+//     // go through each magnitude item to label and color the legend
+//     // push to labels array as list item
+//     for (var i = 0; i < grades.length; i++) {
+//           labels.push('<ul style="background-color:' + circleColor(grades[i] + 1) + '"> <span>' + grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '' : '+') + '</span></ul>');
+//         }
 
-      // add each label list item to the div under the <ul> tag
-      div.innerHTML += "<ul>" + labels.join("") + "</ul>";
+//       // add each label list item to the div under the <ul> tag
+//       div.innerHTML += "<ul>" + labels.join("") + "</ul>";
     
-    return div;
-  };
+//     return div;
+//   };
 
-
+//   legend.addTo(myMap);
 
 
 
@@ -124,6 +124,37 @@ legend.onAdd = function() {
         L.control.layers(baseMaps, overlayMaps, {
           collapsed: false
         }).addTo(myMap);
-        legend.addTo(myMap);
+        //legend.addTo(myMap);
       
-    }
+        function circleColor (depth) {
+          if (depth >= 50.0) return "#E31A1C";
+          else if (depth > 25.0 && depth <= 49.9) return "#FD8D3C";
+          else if (depth > 15.0 && depth <= 24.9) return "#FEB24C";
+          else if (depth > 5.0 && depth <= 14.9) return "#FFEDA0";
+          else return "#FFEDA0"
+        }
+        // Create map legend to provide context for map data
+        let legend = L.control({position: 'bottomright'});
+
+        legend.onAdd = function() {
+            var div = L.DomUtil.create('div', 'info legend');
+            var grades = [0,15,25,50];
+            var labels = [];
+            var legendInfo = "<h4>Depth</h4>";
+
+            div.innerHTML = legendInfo
+
+            // go through each magnitude item to label and color the legend
+            // push to labels array as list item
+            for (var i = 0; i < grades.length; i++) {
+                  labels.push('<ul style="background-color:' + circleColor(grades[i] + 1.0) + '"> <span>' + grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '' : '+') + '</span></ul>');
+                }
+
+              // add each label list item to the div under the <ul> tag
+              div.innerHTML += "<ul>" + labels.join("") + "</ul>";
+            
+            return div;
+          };
+
+          legend.addTo(myMap);
+      }
